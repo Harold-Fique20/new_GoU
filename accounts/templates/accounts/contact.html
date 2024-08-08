@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Contáctanos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="static/accounts/bootstrap.min.css">
+    <link rel="stylesheet" href="static/accounts/templatemo.css">
+    <link rel="stylesheet" href="static/accounts/custom.css">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="static/accounts/fontawesome.min.css">
+
+    <!-- Load map styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+
+</head>
+
+<body>
+    <!-- Start Top Nav -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            
+        </div>
+    </nav>
+    <!-- Close Top Nav -->
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="{% url 'index' %}">
+                Gou II
+            </a>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">Inicio</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">¿Quiénes somos?</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'descarga' %}">Descargar APP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contáctanos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Start Content Page -->
+    <div class="col-md-6 m-auto text-center" style="font-family: Arial, sans-serif; color: #333;">
+        <h1 style="font-size: 2.5em; color: #59ab6e;">Contáctanos</h1>
+        <h2 style="font-size: 2em; color: #333;">¡Nos encantaría saber de ti!</h2>
+        <p style="font-size: 1.2em; line-height: 1.6;">Si tienes alguna pregunta, comentario o sugerencia, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte y nos esforzamos por responder a todas las consultas.</p>
+        <h3 style="font-size: 1.8em; color: #333;">Información de Contacto</h3>
+    
+        <p style="font-size: 1.2em;">
+        <b style="color: #59ab6e;">Email:</b> gou2udec@gmail.com
+        </p>
+    
+        <h3 style="font-size: 1.8em; color: #333;">Horario de Atención</h3>
+    
+        <p style="font-size: 1.2em;">Estamos disponibles para atenderte de lunes a viernes, de 9:00 a 15:00.</p>
+    
+    </div>
+    
+
+    <!-- Start Contact -->
+    <div class="container py-5">
+        <div style="text-align: center;">
+            <h3 style="font-size: 2em; color: #59ab6e; font-family: 'Arial', sans-serif;">Formulario de Contacto</h3>
+        </div>
+        {% csrf_token %}
+        <div class="row py-5">
+            <form class="col-md-9 m-auto" method="post" role="form" style="background-color: #f8f9fa; padding: 30px; border-radius: 15px; box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);">
+                <div class="row">
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="inputname" style="font-weight: bold;">Nombre</label>
+                        <input type="text" class="form-control mt-1" id="name" name="name" placeholder="Nombre" style="border-radius: 5px; border: 1px solid #59ab6e;">
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="inputemail" style="font-weight: bold;">Email</label>
+                        <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email" style="border-radius: 5px; border: 1px solid #59ab6e;">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputsubject" style="font-weight: bold;">Asunto</label>
+                    <input type="text" class="form-control mt-1" id="subject" name="subject" placeholder="Asunto" style="border-radius: 5px; border: 1px solid #59ab6e;">
+                </div>
+                <div class="mb-3">
+                    <label for="inputmessage" style="font-weight: bold;">Mensaje</label>
+                    <textarea class="form-control mt-1" id="message" name="message" placeholder="Mensaje" rows="8" style="border-radius: 5px; border: 1px solid #59ab6e;"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col text-end mt-2">
+                        <button type="submit" class="btn btn-lg px-3" style="background-color: #59ab6e; color: white; border-radius: 5px;">Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+  
+    
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name = $_POST["name"];
+        $email = $_POST["email"];
+        $subject = $_POST["subject"];
+        $message = $_POST["message"];
+
+        $to = "gou2udec@gmail.com";
+        $headers = "From: $email";
+
+        if (mail($to, $subject, $message, $headers)) {
+            echo "Email enviado correctamente";
+        } else {
+            echo "Hubo un error al enviar el email";
+        }
+    }
+    ?>
+              
+    <!-- End Contact -->
+
+
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">GoU versión II</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="gou2udec@gmail.com">gou2udec@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Información</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="{% url 'index' %}">Inicio</a></li>
+                        <li><a class="text-decoration-none" href="{% url 'about' %}">¿Quiénes somos?</a></li>
+                        <li><a class="text-decoration-none" href="{% url 'descarga' %}">Descargar APP</a></li>
+                        <li><a class="text-decoration-none" href="{% url 'contact' %}">Contáctanos</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            2024 GoU versión II
+                            | Universidad de Cundinamarca
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- End Footer -->
+
+    <!-- Start Script -->
+    <script src="assets/js/jquery-1.11.0.min.js"></script>
+    <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/templatemo.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <!-- End Script -->
+</body>
+
+</html>

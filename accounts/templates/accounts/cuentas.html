@@ -1,0 +1,431 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Super_Admin | Gou II</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- Bootstrap 3.3.2 -->
+    <link href="static/accounts/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome Icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- Ionicons -->
+    <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Morris chart -->
+    <link href="accounts/js/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
+    <!-- Theme style -->
+    <link href="static/accounts/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+    <link href="static/accounts/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+    .navbar-custom-menu .user-menu .dropdown-menu {
+      width: 300px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    }
+
+    .navbar-custom-menu .user-menu .dropdown-menu .user-header {
+      background-color: #59ab6e;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #f4f4f4;
+    }
+
+    .navbar-custom-menu .user-menu .dropdown-menu .user-footer {
+      background-color: #f4f4f4;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .navbar-custom-menu .user-menu .dropdown-menu .user-footer .btn {
+      color: #666;
+    }
+    /* Estilos generales del formulario */
+.estilou {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #59ab6e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif; /* Agrega una fuente más profesional */
+}
+
+/* Estilos de etiquetas */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+    font-weight: bold; /* Hace que las etiquetas sean más visibles */
+}
+
+/* Estilos de campos de entrada */
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Agrega un poco de sombra a los campos de entrada */
+}
+
+/* Estilos de botones */
+.estilo-personalizado {
+    width: 100%;
+    padding: 10px;
+    background-color: #aeeabd;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px; /* Hace que el texto del botón sea más grande */
+}
+
+/* Estilos de botones al pasar el ratón */
+.estilo-personalizado:hover {
+    background-color: #05ba60;
+}
+
+
+
+
+
+  </style>
+  </head>
+  <body class="skin-blue">
+    <div class="wrapper">
+      <header class="main-header">
+        <!-- Logo -->
+        <style>
+          .logo {
+            color: #FFFFFF; 
+            text-decoration: none; 
+            font-family: 'Arial', sans-serif;
+            font-size: 24px; 
+            text-shadow: 2px 2px 4px #000000; 
+          }
+          
+          .logo .super {
+            font-weight: bold;
+            color: #59ab6e; 
+          }
+          
+          .logo .admin {
+            font-weight: normal;
+            color: #FFFFFF; 
+          }
+          </style>
+          
+          <a href="{% url 'superadmin' %}" class="logo">
+            <span class="super">SUPER</span>
+            <span class="admin">Administrador</span>
+          </a>
+          
+        <nav class="navbar navbar-static-top" role="navigation">
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only"></span>
+          </a>
+          <!-- Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <img src="accounts/static/img/avatar5.png" class="user-image" alt="User Image">
+                  <span class="hidden-xs">Harold Fique</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="accounts/static/img/avatar5.png" class="img-circle" alt="User Image">
+                    <p>
+                      Harold Fique - Super-Administrador
+                      <small>Universidad de Cundinamarca</small>
+                    </p>
+                  </li>
+                  <!-- Botones -->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="{% url 'config' %}" class="btn btn-default btn-flat">Configuración</a>
+                    </div>
+                    <div class="pull-right">
+                      <a href="{% url 'login' %}" class="btn btn-default btn-flat">Cerrar sesión</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar user panel -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="accounts/static/img/avatar5.png" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info">
+              <p>Harold Fique</p>
+              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+          </div>
+          <!-- search form -->
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Search..."/>
+              <span class="input-group-btn">
+                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form>
+       
+          <!-- MENÚ PRINCIPAL-->
+          <ul class="sidebar-menu">
+            <li class="header">MENÚ PRINCIPAL</li>
+
+            <!-- USUARIOS-->
+            <li class="active treeview">
+              <a href="{% url 'usuario' %}">
+                <i class="fa fa-files-o"></i>
+                <span>Usuarios</span>
+                <span class="label label-primary pull-right"></span>
+              </a>
+            </li>
+
+            <!-- REPORTES-->
+            <li class="active treeview">
+              <a href="#">
+                <i class="fa fa-dashboard"></i> 
+                <span>Reportes</span> 
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
+                <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+                <li class="active"><a href="{% url 'superadmin' %}"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+              </ul>
+            </li>
+
+            <!-- DOCUMENTACIÓN-->
+            <li>
+              <a href="pages/mailbox/mailbox.html">
+                <i class="fa fa-envelope"></i> <span>Documentación</span>
+              </a>
+            </li>
+
+            <!-- RESEÑAS-->
+            <li>
+              <a href="pages/widgets.html">
+                <i class="fa fa-th"></i> <span>Reseñas</span>
+              </a>
+            </li>
+
+            <!-- ADMINISTRADORES-->
+            <li class="active treeview">
+              <a href="#">
+                <i class="fa fa-files-o"></i>
+                <span>Administradores</span>
+                <span class="label label-primary pull-right"></span>
+              </a>
+            </li>
+
+              
+            <li class="header">LABELS</li>
+            <li><a href="#"><i class="fa fa-circle-o text-danger"></i> Important</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-warning"></i> Warning</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-info"></i> Information</a></li>
+          </ul>
+        </section>
+      </aside>
+      <div class="content-wrapper">
+        <!-- FORMULARIO DE REGISTRO DE ADMINISTRADOR -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Registro de Administrador</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                            <form id="register-form" action="{% url 'crear_administrador' %}" method="post" class="estilou">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="email">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo electrónico" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Contraseña</label>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                                    <span id="password-message" class="password-message">La contraseña debe tener 6 caracteres como mínimo</span>
+                                </div>
+                                <button type="submit" class="estilo-personalizado">Registrarse</button>
+                            </form>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </section><!-- /.content -->
+        <section class="content">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-info">
+                      <div class="box-header with-border">
+                          <h3 class="box-title">Usuarios Registrados</h3>
+                      </div><!-- /.box-header -->
+                      <div class="box-body">
+                          <div class="table-responsive">
+                              <table id="user-table" class="table table-striped">
+                                  <thead>
+                                      <tr>
+                                          <th>UID</th>
+                                          <th>Correo Electrónico</th>
+                                          <th>Estado</th>
+                                          <th>Acciones</th>
+                                          <th> </th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                    {% for user in user_list %}
+                                        <tr>
+                                            <td>{{ user.uid }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>{% if user.disabled %}Bloqueado{% else %}Activo{% endif %}</td>
+                                            <td>
+                                              <form action="{% url 'eliminar_admin' uid=user.uid %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="uid" value="{{ user.uid }}">
+                                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                            </td>
+                                            <td>
+                                              <form action="{% url 'bloquear_admin' uid=user.uid %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="uid" value="{{ user.uid }}">
+                                                <button class="btn btn-warning btn-sm" onclick="bloquearUsuario('{{ user.uid }}')">Bloquear</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>                                
+                              </table>
+                          </div><!-- /.table-responsive -->
+                      </div><!-- /.box-body -->
+                  </div><!-- /.box -->
+              </div><!-- /.col -->
+          </div><!-- /.row -->
+      </section><!-- /.content -->
+      
+      <!-- Modal para confirmar bloqueo de usuario -->
+      <div id="blockUserModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Confirmar Bloqueo</h4>
+                  </div>
+                  <div class="modal-body">
+                      <p>¿Estás seguro de que quieres bloquear este usuario?</p>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                      <button type="button" id="confirmBlock" class="btn btn-danger">Bloquear</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <script>
+        // Configura tu aplicación Firebase
+        const firebaseConfig = {
+          'apiKey': 'AIzaSyBeBvJvQm9o9tOtzCoMPcs2UeJvnrbO-yM',
+          'authDomain': 'gou-adm.firebaseapp.com',
+          "databaseURL": 'firebase-adminsdk-3hxpk@gou-adm.iam.gserviceaccount.com',
+          'projectId': 'gou-adm',
+          'storageBucket': 'gou-adm.appspot.com',
+          'messagingSenderId': '909645328534',
+          'appId': '1:909645328534:web:ef4322959f52e7a99452b7',
+          'measurementId': 'G-1N1SH62VZV',
+
+        };
+
+        // Inicializa Firebase
+        firebase.initializeApp(firebaseConfig);
+        $(document).ready(function() {
+          cargarUsuarios();
+        });
+        
+          // Función para cargar los usuarios en la tabla
+          function cargarUsuarios() {
+          var tablaUsuarios = document.getElementById("user-table").getElementsByTagName('tbody')[0];
+
+          firebase.auth().listUsers()
+            .then(function(users) {
+              users.forEach(function(user) {
+                var newRow = tablaUsuarios.insertRow(tablaUsuarios.rows.length);
+                var cell1 = newRow.insertCell(0);
+                var cell2 = newRow.insertCell(1);
+                var cell3 = newRow.insertCell(2);
+                var cell4 = newRow.insertCell(3);
+                cell1.innerHTML = user.uid;
+                cell2.innerHTML = user.email;
+                cell3.innerHTML = user.disabled ? "Bloqueado" : "Activo";
+                cell4.innerHTML = '<button class="btn btn-danger btn-sm" onclick="eliminarUsuario(\'' + user.uid + '\')">Eliminar</button>' +
+                  '<button class="btn btn-warning btn-sm" onclick="bloquearUsuario(\'' + user.uid + '\')">Bloquear</button>';
+              });
+            })
+            .catch(function(error) {
+              console.log("Error al cargar usuarios:", error);
+            });
+        }
+      
+          function bloquearUsuario(uid) {
+              $('#blockUserModal').modal('show');
+              $('#confirmBlock').click(function() {
+              });
+          }
+          window.onload = function() {
+              cargarUsuarios();
+          };
+      </script>
+    </div><!-- /.content-wrapper -->
+    </div>
+
+    <!-- jQuery 2.1.3 -->
+    <script src="{% static 'accounts/js/plugins/jQuery/jQuery-2.1.3.min.js'%}"></script>
+    <!-- Bootstrap 3.3.2 JS -->
+    <script src="{% static 'accounts/js/bootstrap.min.js'%}" ></script>
+    <!-- FastClick -->
+    <script src="{% static 'accounts/js/plugins/fastclick/fastclick.min.js'%}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'accounts/js/app.min.js'%}"></script>
+    <!-- Sparkline -->
+    <script src="{% static 'accounts/js/plugins/sparkline/jquery.sparkline.min.js'%}" ></script>
+    <!-- jvectormap -->
+    <script src="{% static 'accounts/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'%}"></script>
+    <script src="{% static 'accounts/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'%}" ></script>
+    <!-- daterangepicker -->
+    <script src="{% static 'accounts/js/plugins/daterangepicker/daterangepicker.js'%}" ></script>
+    <!-- datepicker -->
+    <script src="{% static 'accounts/js/plugins/datepicker/bootstrap-datepicker.js'%}" ></script>
+    <!-- iCheck -->
+    <script src="{% static 'accounts/js/plugins/iCheck/icheck.min.js'%}"></script>
+    <!-- SlimScroll 1.3.0 -->
+    <script src="{% static 'accounts/js/plugins/slimScroll/jquery.slimscroll.min.js'%}" ></script>
+    <!-- ChartJS 1.0.1 -->
+    <script src="{% static 'accounts/js/plugins/chartjs/Chart.min.js'%}" ></script>
+
+    
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="{% static 'accounts/js/demo.js'%}" ></script>
+  </body>
+</html>

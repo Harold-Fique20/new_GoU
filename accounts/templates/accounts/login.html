@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INICIO DE SESIÓN</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/login.css' %}">
+</head>
+
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Titulo -->
+            <h2 class="active"> INICIAR SESIÓN </h2>
+
+            <!-- icono -->
+            <div class="fadeIn first">
+                <img src="https://cdn-icons-png.flaticon.com/512/2705/2705038.png" id="icon" alt="User Icon" style="width: 70px; height: 70px;" />
+            </div>
+            <style>
+                #icon {
+                    filter: brightness(0) saturate(100%) hue-rotate(150deg); 
+                }
+            </style>
+
+            <!-- Login Form -->
+            <form method="post" action="{% url 'login_view' %}">
+                {% csrf_token %}
+                <input type="text" id="login" class="fadeIn second" name="email" placeholder="Usuario">
+                <input type="password" id="password" class="fadeIn third" name="password" placeholder="Contraseña">
+                <input type="submit" class="fadeIn fourth" value="INGRESAR">
+            </form>
+            
+
+            <!-- Remd Password -->
+            <div id="formFooter">
+                <a class="underlineHover" href="{%url 'recu_contra'%}">¿Olvidó su contraseña?</a>
+            </div>
+            <div id="formFooter">
+                <a href="{%url 'index'%}">Regresar</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

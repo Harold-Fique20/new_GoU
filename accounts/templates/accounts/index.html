@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title> GOU II</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="apple-touch-icon" href="{%static 'apple-icon.png' %}">
+
+    <link rel="stylesheet" type="text/css" href="static/accounts/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/accounts/templatemo.css">
+    <link rel="stylesheet" type="text/css" href="static/accounts/custom.css">
+
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="static/accounts/fontawesome.min.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
+        <div class="container text-light">
+            <div class="w-100 d-flex justify-content-between">
+            </div>
+        </div>
+    </nav>
+
+
+
+<!-- botón de Login -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand text-success logo h1 align-self-center" href="{% url 'index' %}">
+                Gou II
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">Inicio</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">¿Quiénes somos?</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'descarga' %}">Descargar APP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contáctanos</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <a href="{%url 'login' %}" class="btn-iniciar-sesion">Iniciar sesión</a>
+                        
+                    </a>
+                    <style>
+                        .btn-iniciar-sesion {
+                          background-color: #59ab6e; 
+                          border: none;
+                          color: white;
+                          padding: 15px 32px;
+                          text-align: center;
+                          text-decoration: none;
+                          display: inline-block;
+                          font-size: 16px;
+                          margin: 4px 2px;
+                          cursor: pointer;
+                          border-radius: 12px; 
+                          transition-duration: 0.4s; 
+                        }
+                      
+                        .btn-iniciar-sesion:hover {
+                          background-color: #45a049; 
+                          box-shadow: 0 5px #666;
+                          transform: translateY(4px);
+                        }
+                    </style>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+  
+
+    <!-- Inicio de carrusel -->
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{%static 'img/carpoo.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1 text-success"><b>Carpooling: Un viaje hacia la sostenibilidad</b></h1>
+                                <h3 class="h2">“Compartir el viaje, compartir los beneficios.”</h3>
+                                <p>
+                                    El carpooling, o compartir coche, es una solución simple y efectiva para muchos problemas modernos. 
+                                    Reduce la congestión del tráfico, disminuye la emisión de gases de efecto invernadero y ahorra dinero en combustible y mantenimiento del vehículo. 
+                                    Al compartir el viaje, no solo compartimos los costos, sino también un compromiso con un futuro más verde y sostenible.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{%static 'img/carpoo1.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1">El poder del Carpooling: más allá del ahorro de combustible</h1>
+                                <h3 class="h2">“Un coche menos en la carretera, un paso más hacia un futuro sostenible.”</h3>
+                                <p>
+                                    El carpooling no solo es beneficioso para nuestro bolsillo, sino también para nuestro planeta.
+                                    Al reducir el número de vehículos en la carretera, disminuimos la contaminación del aire y la huella de carbono. 
+                                    Además, el carpooling fomenta la interacción social y puede convertir un aburrido viaje diario en una experiencia agradable y social.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{%static 'img/carpoo2.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1">Carpooling: Conduciendo hacia un futuro mejor</h1>
+                                <h3 class="h2">“Cada viaje compartido es un paso hacia un mundo más limpio y verde.” </h3>
+                                <p>
+                                    El carpooling es una forma efectiva de hacer un uso más eficiente de nuestros vehículos. 
+                                    Al compartir los viajes, podemos reducir significativamente la cantidad de emisiones de carbono y contribuir a la lucha contra el cambio climático. 
+                                    Además, el carpooling puede ayudar a aliviar la congestión del tráfico y mejorar la calidad del aire en nuestras ciudades. Es una solución simple, pero poderosa, para un futuro más sostenible.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+    
+
+
+    <!-- ARTÍCULOS -->
+    <section class="container py-5">
+        <div class="row text-center pt-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Artículos sobre Carpooling</h1>
+                <p>
+                    Estos artículos proporcionan información valiosa y actualizada, 
+                    diseñada para enriquecer su comprensión y conocimiento sobre este importante tema.
+                    Le invitamos a explorar y aprovechar estos recursos.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 p-5 mt-3 text-center">
+                <img src="https://ars.els-cdn.com/content/image/S01912607.gif" class="rounded-circle img-fluid border">
+                <h5 class="mt-3 mb-3">Compartir coche: ¿quién?, ¿cómo y por qué?</h5>
+                <a href="https://doi.org/10.1016/0191-2607(87)90014-8" class="btn btn-success">Leer</a>
+            </div>
+            
+            <div class="col-12 col-md-4 p-5 mt-3 text-center">
+                <img src="https://ars.els-cdn.com/content/image/1-s2.0-S2214367X23X00052-cov150h.gif" class="rounded-circle img-fluid border">
+                <h5 class="mt-3 mb-3">Los beneficios de compartir coche</h5>
+                <a href="https://escholarship.org/content/qt7jx6z631/qt7jx6z631.pdf" class="btn btn-success">Leer</a>
+            </div>
+            
+            <div class="col-12 col-md-4 p-5 mt-3 text-center">
+                <img src="https://ars.els-cdn.com/content/image/1-s2.0-S2213624X23X00054-cov150h.gif" class="rounded-circle img-fluid border">
+                <h5 class="mt-3 mb-3">Desarrollar un modelo descentralizado basado en la comunidad de prácticas para el uso compartido de vehículos eléctricos bajo demanda hacia una movilidad compartida sostenible</h5>
+                <a href="https://pdf.sciencedirectassets.com/286278/1-s2.0-S2213624X23X00054/1-s2.0-S2213624X23001906/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLWVhc3QtMSJIMEYCIQDnsOWa7SYPpPIghNrlUx1Ip31Tq0Nzj1Ix5pGYVEhPFQIhAOzOykq3ridpcgjAP2jC42ZjPotvEaBLWOnqzZ2P%2Fkz3KrsFCMb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQBRoMMDU5MDAzNTQ2ODY1IgyBKToP4erzpPviug8qjwXWIVi%2B%2B5Y8qgC%2FTXH6a56G8Rf4lrTnSw4YkMqYSsrJVD5soTFb%2BZL%2FLQdMyl8F%2BWHGUwvxLyouBAHcAMrx%2Fz6%2BPeYpI2tZeTVGAMxNMluu16E058tNnU6YX0nZej6OxebGrbxnemDQ%2BfIatBsKOzMDLVVvwStZTAlOZ7N0pxAt%2BTN6E%2B%2BlekJ310ylyh9RVHtDEVDavaYAgMmmDyQt3D%2FURrsRAqjpkMT6OgXH9MwRnpKC4cZvzKPcEUBh0kBdvkPCSvr9ZVsHQdi4nPALBEt2DLZiuUXmolBpLXXno929ocfryXJJQnPxVoiueoJMLN55G8nd3dwCn6L6pExGr96q1yLO8rFeTqeU%2Bi5Ukjw4pvl4oGiWPkPGvZRcJ04PyMVEjTVP1n1WZRCWF39MpK9MwWKh4wSS4Kf3qDZEIvGvuFtZHinMcw%2Bil0bzlzje%2FE88McPGE3CgOD514nxicSum%2BZzMZf%2BVMKN3zkQaO7Q00V28UDc0jdzJcwYPWvusEmeMgcW1mIm%2BHn%2FkJOxW24U2Pb1WvCxR0TFkdl2NlwfSJnUcokoAwf36uwVdxW7ggyhZHgSsTv5HQjtlpPYxUDFOCqx65XLPaEzRvziRt%2FQWR411drVHWJzFICCtdDVsYcPqihpBEbNC%2FHoQUDzzmE5Q2qNBFE98Mrf5qjVCPmNwhKd2h1RAvSfQT0Jsq7m%2BHisYkgcRv2MvckX4TCfFJiqPTDIZUxA5Kl6CAEQQLWEqF%2FKAgfA%2BuwqBOlqUIpaSDdBNx7hmy9wA8O8CJoMQynkT1HIxCdLielATj5wtvohbDcAB6i3D6G4tf4Lc9s6FKpFVL3Dlk%2ByAsZdJvr4CFB6Nz%2Fp8xZxDatQvtMaCv%2B9%2BMKm0sLEGOrABo81Xn9XNMvXsFS%2Fa%2BcqvlqapybkHj86EkZtXGI44Lsr8Dp6jznolDXC8s%2B%2BpPawE4M%2Bk5vPdRINca1j7tkl7HSzhI2BNyqsY42MJ22lxAGbWluBt0EOfG8F0nQaoLBfpq31MPerOnm35rPCKHWqd56l7xvriZkePU8REIaNw5kidHLBwVZf5LeBeKAvMfgMNqmokc7%2Fg2Ly94nKNnmDiwZYytVZOfOH%2BzUQIxzMMZI4%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240426T224832Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYQIHHDAFY%2F20240426%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=7541967eb8688c51124d3be4b4de93480e574ac0368fbcb05336b262505efc13&hash=2ab4b44ac65a1e79a8e78cc82d675922233038ce993351a79c7751e4cda78e8a&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S2213624X23001906&tid=spdf-e6613e4b-084a-4154-9640-cc2932bb12ef&sid=dbc60d4c25649249af39b9b1a308b577f51agxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=19095d510603560b0250&rr=87aa1ef04faba4ec&cc=co" class="btn btn-success">Leer</a>
+            </div>
+
+        </div>
+    </section>
+    
+
+    <!-- Start Footer -->
+    <footer class="bg-dark" id="tempaltemo_footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">GoU versión II</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="gou2udec@gmail.com">gou2udec@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Información</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="{% url 'index' %}">Inicio</a></li>
+                        <li><a class="text-decoration-none" href="{% url 'about' %}">¿Quiénes somos?</a></li>
+                        <li><a class="text-decoration-none" href="{% url 'descarga' %}">Descargar APP</a></li>
+                        <li><a class="text-decoration-none" href="{% url 'contact' %}">Contáctanos</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            2024 GoU versión II
+                            | Universidad de Cundinamarca
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    
+    
+    <script src="{% static 'accounts/js/jquery-1.11.0.min.js'%}"></script>
+    <script src="{% static 'accounts/js/jquery-migrate-1.2.1.min.js'%}"></script>
+    <script src="{% static 'accounts/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'accounts/js/templatemo.js'%}"></script>
+    <script src="{% static 'accounts/js/custom.js'%}"></script>
+ 
+</body>
+
+</html>
