@@ -49,7 +49,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Gou.urls'
 
 # FIREBASE
-'''config = {
+config = {
     'apiKey': 'AIzaSyDwsH9n4F80ubgz4VVxLAmZw2aeF640IfI',
     'authDomain': 'gou-v-2.firebaseapp.com',
     "databaseURL": 'firebase-adminsdk-8b7uu@gou-v-2.iam.gserviceaccount.com',
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'Gou.urls'
 
 firebase=pyrebase.initialize_app(config)
 authe = firebase.auth()
-database=firebase.database()'''
+database=firebase.database()
  
 
 TEMPLATES = [
@@ -95,15 +95,20 @@ EMAIL_HOST_PASSWORD = 'gou22024'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': '<Gou>',
         'HOST': 'mongodb+srv://GoU:<gou22024>@clustergou.0rlnvqb.mongodb.net/?retryWrites=true&w=majority&appName=ClusterGoU',
     }
+}'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-
-
 
 
 
