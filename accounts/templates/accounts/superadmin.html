@@ -89,14 +89,14 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                   <img src="accounts/static/img/avatar5.png" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Harold Fique</span>
+                  <span class="hidden-xs">{{ usuario.nombre }} {{ usuario.apellido }}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="accounts/static/img/avatar5.png" class="img-circle" alt="User Image">
+                    <img src="{{ image_data }}" class="user-image" alt="User Image">
                     <p>
-                      Harold Fique - Super-Administrador
+                      {{ usuario.nombre }} {{ usuario.apellido }} - {{ usuario.rol }} 
                       <small>Universidad de Cundinamarca</small>
                     </p>
                   </li>
@@ -125,9 +125,9 @@
               <img src="accounts/static/img/avatar5.png" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
-              <p>Harold Fique</p>
+              <p>{{ usuario.nombre }} {{ usuario.apellido }}</p>
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
+          </div>          
           </div>
           <!-- search form -->
           <form action="#" method="get" class="sidebar-form">
@@ -198,6 +198,50 @@
         </section>
       </aside>
       <!-- AQUI VA LO DE LA PÁGINA PRINCIPAL -->
+      <div class="content-wrapper">
+        <!-- SECCIÓN DE TEXTO -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                          <h3 class="box-title"><strong>Información Importante</strong></h3>
+                        </div><!-- /.box-header -->
+                        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+
+                          <h2 style="text-align: center; font-weight: bold; color: #2c3e50;">Bloqueo de usuario</h2>
+                      
+                          <p><strong>Es restringir temporalmente su acceso y funcionalidades en el aplicativo.</strong> El usuario sigue existiendo en la base de datos, pero no puede iniciar sesión ni utilizar las funcionalidades del sistema. El tiempo estimado del bloqueo sería de <strong>15 días</strong>.</p>
+                      
+                          <h3 style="font-weight: bold; color: #2c3e50;">Condiciones para bloquear un usuario:</h3>
+                          <ul style="padding-left: 20px; list-style-type: disc;">
+                              <li><strong>Uso inapropiado de la plataforma:</strong> Los usuarios no deben utilizar los servicios del aplicativo para fines diferentes a los permitidos, como publicitar servicios no relacionados con GoU.</li>
+                              <li><strong>Puntualidad y compromiso:</strong> Los usuarios deben ser puntuales y cumplir con los viajes acordados. Cancelaciones repetidas sin justificación válida pueden considerarse incumplimiento.</li>
+                              <li><strong>Información veraz:</strong> Los usuarios deben proporcionar información precisa y actualizada en sus perfiles. Mentir sobre detalles como la identificación o el estado del vehículo (en el caso de los conductores) es una violación de las normas.</li>
+                              <li><strong>Quejas de Conductores/Usuarios:</strong> Varias quejas de conductores o pasajeros sobre la conducta del usuario durante los viajes, lo que justifica una revisión más profunda de su comportamiento.</li>
+                          </ul>
+                      
+                          <h2 style="text-align: center; font-weight: bold; color: #c0392b;">Eliminación de usuario</h2>
+                      
+                          <p><strong>La eliminación de un usuario es una acción permanente dependiendo del caso,</strong> implica la remoción total de la cuenta del sistema y la pérdida de acceso a los servicios del aplicativo. Esta medida se toma en casos donde las infracciones son graves o repetitivas.</p>
+                      
+                          <h3 style="font-weight: bold; color: #c0392b;">Motivos para la eliminación de un usuario:</h3>
+                          <ul style="padding-left: 20px; list-style-type: disc;">
+                              <li><strong>Acoso o intimidación:</strong> Un usuario ha sido reportado por múltiples personas por acosar o intimidar a otros durante un viaje. Como los comentarios sexuales inapropiados, amenazas verbales, o cualquier forma de violencia física o verbal.</li>
+                              <li><strong>Reincidencia:</strong> El usuario ha sido bloqueado en múltiples ocasiones y continúa mostrando un comportamiento que va en contra del respeto, la ética y la moral, sin signos de mejora o cumplimiento.</li>
+                              <li><strong>Solicitud del usuario:</strong> En el caso de que el usuario haya registrado información errónea, este puede solicitar la eliminación de su cuenta de manera formal, y tras la confirmación de identidad, se procede con la eliminación de todos sus datos personales y acceso al sistema, para registrarse nuevamente.</li>
+                              <li><strong>Robo o daño a propiedad:</strong> El usuario ha robado objetos de otro pasajero o conductor, o ha causado daños significativos al vehículo compartido, como vandalismo.</li>
+                              <li><strong>Abuso de información sensible:</strong> Uso de la información de otros usuarios para acosar, extorsionar o cometer otros actos ilegales.</li>
+                          </ul>
+                      
+                      </div>
+                      
+                    </div><!-- /.box -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+    
     </div>
 
     <!-- jQuery 2.1.3 -->

@@ -221,131 +221,162 @@
       </aside>
       <div class="content-wrapper">
         
-
-        <!-- TABLA DE USUARIOS -->
+        <!-- TABLA DE USUARIOS de la UDEC -->
         <section class="content">
           <div class="row">
               <div class="col-md-12">
                   <div class="box box-info">
                       <div class="box-header with-border">
-                          <h3 class="box-title">Usuarios Registrados</h3>
+                        <center><h3 class="box-title">Usuarios Registrados UdeC</h3></center>
                       </div><!-- /.box-header -->
                       <div class="box-body">
                           <div class="table-responsive">
                               <table id="user-table" class="table table-striped">
                                   <thead>
                                       <tr>
-                                          <th>UID</th>
-                                          <th>Correo Electrónico</th>
-                                          <th>Estado</th>
+                                          <th>ID Usuario</th>
+                                          <th>Nombre</th>
+                                          <th>Apellidos</th>
+                                          <th>Teléfono</th>
+                                          <th>Email</th>
                                           <th>Acciones</th>
                                           <th> </th>
                                       </tr>
                                   </thead>
                                   <tbody>
-                                    {% for user in user_list %}
+                                    {% for user in usuarios_not_blocked %}
                                         <tr>
-                                            <td>{{ user.uid }}</td>
-                                            <td>{{ user.email }}</td>
-                                            <td>{% if user.disabled %}Bloqueado{% else %}Activo{% endif %}</td>
-                                            <td>
-                                              <form action="{% url 'eliminar_usuario' uid=user.uid %}" method="post">
+                                          <td>{{ user.idusuario }}</td>
+                                          <td>{{ user.nombre }}</td>
+                                          <td>{{ user.apellidos }}</td>
+                                          <td>{{ user.telefono }}</td>
+                                          <td>{{ user.email }}</td>
+                        
+                                          <td>
+                                            <form action="{% url 'eliminar_usuario' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                                              {% csrf_token %}
+                                              <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                            </form>
+                                          </td>
+                                          <td>
+                                            <form action="{% url 'bloquear_usuario' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas bloquear este usuario?');">
                                                 {% csrf_token %}
-                                                <input type="hidden" name="uid" value="{{ user.uid }}">
-                                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                                            </td>
-                                            <td>
-                                              <form action="{% url 'bloquear_usuario' uid=user.uid %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="uid" value="{{ user.uid }}">
-                                                <button class="btn btn-warning btn-sm" onclick="bloquearUsuario('{{ user.uid }}')">Bloquear</button>
-                                            </td>
+                                                <button type="submit" class="btn btn-warning btn-sm">Bloquear</button>
+                                            </form>
+                                        </td>
                                         </tr>
                                     {% endfor %}
-                                </tbody>                                
+                                </tbody>                                                           
                               </table>
                           </div><!-- /.table-responsive -->
                       </div><!-- /.box-body -->
                   </div><!-- /.box -->
               </div><!-- /.col -->
           </div><!-- /.row -->
-      </section><!-- /.content -->
-      
-      <!-- Modal para confirmar bloqueo de usuario -->
-      <div id="blockUserModal" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Confirmar Bloqueo</h4>
-                  </div>
-                  <div class="modal-body">
-                      <p>¿Estás seguro de que quieres bloquear este usuario?</p>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                      <button type="button" id="confirmBlock" class="btn btn-danger">Bloquear</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-      
-      <script>
-        // Configura tu aplicación Firebase
-        const firebaseConfig = {
-          'apiKey': 'AIzaSyBjJsP8lMKUN0DoZFHPo1LNs3U0KwQ1OOc',
-          'authDomain': 'gouv2-b5056.firebaseapp.com',
-          "databaseURL": 'firebase-adminsdk-mrmlq@gouv2-b5056.iam.gserviceaccount.com',
-          'projectId': 'gouv2-b5056',
-          'storageBucket': 'gouv2-b5056.appspot.com',
-          'messagingSenderId': '758338289161',
-          'appId': '1:909645328534:web:ef4322959f52e7a99452b7',
-          'measurementId': '1:758338289161:web:721cc670e8b805ecab02d8',
+        </section><!-- /.content -->
 
-        };
+        <!-- TABLA DE USUARIOS invitados -->
+        <section class="content">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-info">
+                      <div class="box-header with-border">
+                        <center><h3 class="box-title">Usuarios Registrados invitados</h3></center>
+                      </div><!-- /.box-header -->
+                      <div class="box-body">
+                          <div class="table-responsive">
+                              <table id="user-table" class="table table-striped">
+                                  <thead>
+                                      <tr>
+                                          <th>ID Usuario</th>
+                                          <th>Nombre</th>
+                                          <th>Apellidos</th>
+                                          <th>Teléfono</th>
+                                          <th>Email</th>
+                                          <th>Acciones</th>
+                                          <th> </th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                    {% for user in invitados_not_blocked %}
+                                        <tr>
+                                          <td>{{ user.idusuario }}</td>
+                                          <td>{{ user.nombre }}</td>
+                                          <td>{{ user.apellidos }}</td>
+                                          <td>{{ user.telefono }}</td>
+                                          <td>{{ user.email }}</td>
+                        
+                                          <td>
+                                            <form action="{% url 'eliminar_usuario' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este invitado?');">
+                                              {% csrf_token %}
+                                              <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                            </form>
+                                          </td>
+                                          <td>
+                                            <form action="{% url 'bloquear_usuario' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas bloquear este invitado?');">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-warning btn-sm">Bloquear</button>
+                                            </form>
+                                        </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>                                                             
+                              </table>
+                          </div><!-- /.table-responsive -->
+                      </div><!-- /.box-body -->
+                  </div><!-- /.box -->
+              </div><!-- /.col -->
+          </div><!-- /.row -->
+        </section><!-- /.content -->
 
-        // Inicializa Firebase
-        firebase.initializeApp(firebaseConfig);
-        $(document).ready(function() {
-          cargarUsuarios();
-        });
-        
-          // Función para cargar los usuarios en la tabla
-          function cargarUsuarios() {
-          var tablaUsuarios = document.getElementById("user-table").getElementsByTagName('tbody')[0];
+        <!-- /.TABLA DE USUARIOS bloqueados -->
+        <section class="content">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="box box-info">
+                      <div class="box-header with-border">
+                        <center><h3 class="box-title">Usuarios Bloqueados</h3></center>
+                      </div><!-- /.box-header -->
+                      <div class="box-body">
+                          <div class="table-responsive">
+                              <table id="user-table" class="table table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th>ID Administrador</th>
+                                      <th>Nombre</th>
+                                      <th>Apellido</th>
+                                      <th>Rol</th>
+                                      <th>Email</th>
+                                      <th>Acción</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                {% for user in combined_blocked %}
+                                    <tr>
+                                      <td>{{ user.id }}</td>
+                                      <td>{{ user.nombre }}</td>
+                                      <td>{{ user.apellido }}</td>
+                                      <td>{{ user.rol }}</td>
+                                      <td>{{ user.email }}</td>
+                    
+                                    <td>
+                                        <form action="{% url 'desbloquear_admin' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas desbloquear este administrador?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-warning btn-sm">Desbloquear</button>
+                                        </form>
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                            </tbody>                                                           
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.box-body -->
+              </div><!-- /.box -->
+          </div><!-- /.col -->
+      </div><!-- /.row -->
+    </section><!-- /.content -->
 
-          // Obtener la lista de usuarios de Firebase Authentication
-          firebase.auth().listUsers()
-            .then(function(users) {
-              users.forEach(function(user) {
-                var newRow = tablaUsuarios.insertRow(tablaUsuarios.rows.length);
-                var cell1 = newRow.insertCell(0);
-                var cell2 = newRow.insertCell(1);
-                var cell3 = newRow.insertCell(2);
-                var cell4 = newRow.insertCell(3);
-                cell1.innerHTML = user.uid;
-                cell2.innerHTML = user.email;
-                cell3.innerHTML = user.disabled ? "Bloqueado" : "Activo";
-                cell4.innerHTML = '<button class="btn btn-danger btn-sm" onclick="eliminarUsuario(\'' + user.uid + '\')">Eliminar</button>' +
-                  '<button class="btn btn-warning btn-sm" onclick="bloquearUsuario(\'' + user.uid + '\')">Bloquear</button>';
-              });
-            })
-            .catch(function(error) {
-              console.log("Error al cargar usuarios:", error);
-            });
-        }
-      
-          // Función para bloquear un usuario
-          function bloquearUsuario(uid) {
-              // Muestra el modal de confirmación de bloqueo
-              $('#blockUserModal').modal('show');
-              $('#confirmBlock').click(function() {
-              });
-          }
-          window.onload = function() {
-              cargarUsuarios();
-          };
-      </script>
+
       </div><!-- /.content-wrapper -->
     </div>
 

@@ -48,21 +48,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Gou.urls'
 
-# FIREBASE
-config = {
-    'apiKey': 'AIzaSyDwsH9n4F80ubgz4VVxLAmZw2aeF640IfI',
-    'authDomain': 'gou-v-2.firebaseapp.com',
-    "databaseURL": 'firebase-adminsdk-8b7uu@gou-v-2.iam.gserviceaccount.com',
-    'projectId': 'gou-v-2',
-    'storageBucket': 'gou-v-2.appspot.com',
-    'messagingSenderId': '1072778966687',
-    'appId': '1:1072778966687:web:8581d8dc4b5733329c14aa',
-    'measurementId': 'G-L4X0HBZ3GS',
-}
-
-firebase=pyrebase.initialize_app(config)
-authe = firebase.auth()
-database=firebase.database()
  
 
 TEMPLATES = [
@@ -95,20 +80,18 @@ EMAIL_HOST_PASSWORD = 'gou22024'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-'''DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': '<Gou>',
-        'HOST': 'mongodb+srv://GoU:<gou22024>@clustergou.0rlnvqb.mongodb.net/?retryWrites=true&w=majority&appName=ClusterGoU',
-    }
-}'''
+
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'Gou',  
+        'CLIENT': {
+            'host': 'mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority&appName=ClusterGoU',
+        }
     }
 }
+
 
 
 

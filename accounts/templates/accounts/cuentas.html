@@ -276,126 +276,114 @@ form input[type="password"] {
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </section><!-- /.content -->
+        
+        <!-- /.Tabla de usuarios registrados -->
         <section class="content">
           <div class="row">
               <div class="col-md-12">
                   <div class="box box-info">
                       <div class="box-header with-border">
-                          <h3 class="box-title">Usuarios Registrados</h3>
+                        <center><h3 class="box-title">Usuarios Registrados</h3></center>
                       </div><!-- /.box-header -->
                       <div class="box-body">
                           <div class="table-responsive">
                               <table id="user-table" class="table table-striped">
                                   <thead>
-                                      <tr>
-                                          <th>UID</th>
-                                          <th>Correo Electrónico</th>
-                                          <th>Estado</th>
-                                          <th>Acciones</th>
-                                          <th> </th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                    {% for user in user_list %}
-                                        <tr>
-                                            <td>{{ user.uid }}</td>
-                                            <td>{{ user.email }}</td>
-                                            <td>{% if user.disabled %}Bloqueado{% else %}Activo{% endif %}</td>
-                                            <td>
-                                              <form action="{% url 'eliminar_admin' uid=user.uid %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="uid" value="{{ user.uid }}">
-                                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                                            </td>
-                                            <td>
-                                              <form action="{% url 'bloquear_admin' uid=user.uid %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="uid" value="{{ user.uid }}">
-                                                <button class="btn btn-warning btn-sm" onclick="bloquearUsuario('{{ user.uid }}')">Bloquear</button>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>                                
-                              </table>
-                          </div><!-- /.table-responsive -->
-                      </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-              </div><!-- /.col -->
-          </div><!-- /.row -->
-      </section><!-- /.content -->
-      
-      <!-- Modal para confirmar bloqueo de usuario -->
-      <div id="blockUserModal" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Confirmar Bloqueo</h4>
-                  </div>
-                  <div class="modal-body">
-                      <p>¿Estás seguro de que quieres bloquear este usuario?</p>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                      <button type="button" id="confirmBlock" class="btn btn-danger">Bloquear</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-      
-      <script>
-        // Configura tu aplicación Firebase
-        const firebaseConfig = {
-          'apiKey': 'AIzaSyBeBvJvQm9o9tOtzCoMPcs2UeJvnrbO-yM',
-          'authDomain': 'gou-adm.firebaseapp.com',
-          "databaseURL": 'firebase-adminsdk-3hxpk@gou-adm.iam.gserviceaccount.com',
-          'projectId': 'gou-adm',
-          'storageBucket': 'gou-adm.appspot.com',
-          'messagingSenderId': '909645328534',
-          'appId': '1:909645328534:web:ef4322959f52e7a99452b7',
-          'measurementId': 'G-1N1SH62VZV',
+                                    <tr>
+                                      <th>ID Administrador</th>
+                                      <th>Nombre</th>
+                                      <th>Apellido</th>
+                                      <th>Rol</th>
+                                      <th>Email</th>
+                                      <th>Acciones</th>
+                                      <th> </th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                {% for user in user_list %}
+                                    <tr>
+                                      <td>{{ user.id }}</td>
+                                      <td>{{ user.nombre }}</td>
+                                      <td>{{ user.apellido }}</td>
+                                      <td>{{ user.rol }}</td>
+                                      <td>{{ user.email }}</td>
+                    
+                                      <td>
+                                        <form action="{% url 'eliminar_admin' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este administrador?');">
+                                          {% csrf_token %}
+                                          <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                      </form>
+                                    </td>
+                                    <td>
+                                        <form action="{% url 'bloquear_admin' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas bloquear este administrador?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-warning btn-sm">Bloquear</button>
+                                        </form>
+                                    </td>
+                                    
+                                    
+                                    </tr>
+                                {% endfor %}
+                            </tbody>                                                           
+                          </table>
+                      </div><!-- /.table-responsive -->
+                  </div><!-- /.box-body -->
+              </div><!-- /.box -->
+          </div><!-- /.col -->
+      </div><!-- /.row -->
+    </section><!-- /.content -->
 
-        };
+    <!-- /.Tabla de usuarios bloqueados -->
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="box box-info">
+                  <div class="box-header with-border">
+                    <center><h3 class="box-title">Usuarios Bloqueados</h3></center>
+                  </div><!-- /.box-header -->
+                  <div class="box-body">
+                      <div class="table-responsive">
+                          <table id="user-table" class="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th>ID Administrador</th>
+                                  <th>Nombre</th>
+                                  <th>Apellido</th>
+                                  <th>Rol</th>
+                                  <th>Email</th>
+                                  <th>Acción</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            {% for user in users_blocked %}
+                                <tr>
+                                  <td>{{ user.id }}</td>
+                                  <td>{{ user.nombre }}</td>
+                                  <td>{{ user.apellido }}</td>
+                                  <td>{{ user.rol }}</td>
+                                  <td>{{ user.email }}</td>
+                
+                                <td>
+                                    <form action="{% url 'desbloquear_admin' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas desbloquear este administrador?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-warning btn-sm">Desbloquear</button>
+                                    </form>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                        </tbody>                                                           
+                      </table>
+                  </div><!-- /.table-responsive -->
+              </div><!-- /.box-body -->
+          </div><!-- /.box -->
+      </div><!-- /.col -->
+  </div><!-- /.row -->
+</section><!-- /.content -->
 
-        // Inicializa Firebase
-        firebase.initializeApp(firebaseConfig);
-        $(document).ready(function() {
-          cargarUsuarios();
-        });
-        
-          // Función para cargar los usuarios en la tabla
-          function cargarUsuarios() {
-          var tablaUsuarios = document.getElementById("user-table").getElementsByTagName('tbody')[0];
-
-          firebase.auth().listUsers()
-            .then(function(users) {
-              users.forEach(function(user) {
-                var newRow = tablaUsuarios.insertRow(tablaUsuarios.rows.length);
-                var cell1 = newRow.insertCell(0);
-                var cell2 = newRow.insertCell(1);
-                var cell3 = newRow.insertCell(2);
-                var cell4 = newRow.insertCell(3);
-                cell1.innerHTML = user.uid;
-                cell2.innerHTML = user.email;
-                cell3.innerHTML = user.disabled ? "Bloqueado" : "Activo";
-                cell4.innerHTML = '<button class="btn btn-danger btn-sm" onclick="eliminarUsuario(\'' + user.uid + '\')">Eliminar</button>' +
-                  '<button class="btn btn-warning btn-sm" onclick="bloquearUsuario(\'' + user.uid + '\')">Bloquear</button>';
-              });
-            })
-            .catch(function(error) {
-              console.log("Error al cargar usuarios:", error);
-            });
-        }
       
-          function bloquearUsuario(uid) {
-              $('#blockUserModal').modal('show');
-              $('#confirmBlock').click(function() {
-              });
-          }
-          window.onload = function() {
-              cargarUsuarios();
-          };
-      </script>
+      
+      
+      
     </div><!-- /.content-wrapper -->
     </div>
 
