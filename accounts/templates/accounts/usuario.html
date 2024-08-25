@@ -342,25 +342,26 @@
                               <table id="user-table" class="table table-striped">
                                   <thead>
                                     <tr>
-                                      <th>ID Administrador</th>
+                                      <th>ID Usuario</th>
                                       <th>Nombre</th>
-                                      <th>Apellido</th>
-                                      <th>Rol</th>
+                                      <th>Apellidos</th>
+                                      <th>Teléfono</th>
                                       <th>Email</th>
-                                      <th>Acción</th>
+                                      <th>Acciones</th>
+                                      <th> </th>
                                   </tr>
                               </thead>
                               <tbody>
                                 {% for user in combined_blocked %}
                                     <tr>
-                                      <td>{{ user.id }}</td>
+                                      <td>{{ user.idusuario }}</td>
                                       <td>{{ user.nombre }}</td>
-                                      <td>{{ user.apellido }}</td>
-                                      <td>{{ user.rol }}</td>
+                                      <td>{{ user.apellidos }}</td>
+                                      <td>{{ user.telefono }}</td>
                                       <td>{{ user.email }}</td>
                     
                                     <td>
-                                        <form action="{% url 'desbloquear_admin' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas desbloquear este administrador?');">
+                                        <form action="{% url 'desbloquear_usuario' user.email %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas desbloquear este usuario?');">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-warning btn-sm">Desbloquear</button>
                                         </form>

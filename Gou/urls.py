@@ -32,6 +32,7 @@ urlpatterns = [
     # Paths para la gestión de usuarios y administradores
     path('eliminar_usuario/<str:email>/', views.eliminar_usuario, name='eliminar_usuario'),
     path('bloquear_usuario/<str:email>/', views.bloquear_usuario, name='bloquear_usuario'),
+    path('desbloquear_usuario/<str:email>/', views.desbloquear_usuario, name='desbloquear_usuario'),
     path('eliminar_admin/<str:email>/', views.eliminar_admin, name='eliminar_admin'),
     path('bloquear_admin/<str:email>/', views.bloquear_admin, name='bloquear_admin'),
     path('desbloquear_admin/<str:email>/', views.desbloquear_admin, name='desbloquear_admin'),

@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 import firebase_admin
-from firebase_admin import auth, credentials
+from firebase_admin import auth, credentials, delete_app
 from firebase_admin.exceptions import NotFoundError, FirebaseError
 from pymongo import MongoClient
 from .firebase_config import auth, database, firebase
@@ -367,6 +367,49 @@ def bloquear_usuario(request, email):
 
 
 
+def desbloquear_usuario(request, email):
+    # Inicializar Firebase solo si no está ya inicializado
+    if not firebase_admin._apps:
+        cred = credentials.Certificate('gouv2-b5056-firebase-adminsdk-mrmlq-7abf803639.json')
+        firebase_admin.initialize_app(cred)
+
+    try:
+        # Obtener el usuario de Firebase
+        user_record = auth.get_user_by_email(email)
+
+        # Conectar a MongoDB
+        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
+        db = client['Gou']
+        usuarios_collection = db['Usuarios']
+        invitados_collection = db['UsuarioInvitado']
+
+        # Actualizar el campo 'bloqueado' a False en la colección Usuarios
+        result_usuarios = usuarios_collection.update_one(
+            {'email': email},
+            {'$set': {'bloqueado': False}}
+        )
+
+        # Actualizar el campo 'bloqueado' a False en la colección Invitados
+        result_invitados = invitados_collection.update_one(
+            {'email': email},
+            {'$set': {'bloqueado': False}}
+        )
+
+        # Verificar si el usuario fue desbloqueado en alguna colección
+        if result_usuarios.matched_count > 0 or result_invitados.matched_count > 0:
+            messages.success(request, 'El usuario se desbloqueó correctamente en MongoDB.')
+        else:
+            messages.warning(request, 'El usuario fue encontrado en Firebase, pero no se encontró en MongoDB.')
+
+    except exceptions.FirebaseError as e:
+        messages.error(request, f'Ocurrió un error al interactuar con Firebase: {e}')
+    except Exception as e:
+        messages.error(request, f'Ocurrió un error inesperado al desbloquear el usuario: {e}')
+
+    return redirect('usuario')
+
+
+
 
 def eliminar_admin(request, email):
     if not firebase_admin._apps:
@@ -384,9 +427,9 @@ def eliminar_admin(request, email):
         result = collection.delete_one({'correo': email})
 
         if result.deleted_count > 0:
-            messages.success(request, 'El usuario se eliminó correctamente de Firebase y MongoDB.')
+            messages.success(request, 'El administrador se eliminó correctamente de Firebase y MongoDB.')
         else:
-            messages.warning(request, 'El usuario fue eliminado de Firebase, pero no se encontró en MongoDB.')
+            messages.warning(request, 'El administrador fue eliminado de Firebase, pero no se encontró en MongoDB.')
 
     except exceptions.FirebaseError as e:
         messages.error(request, 'Ocurrió un error al interactuar con Firebase.')
@@ -416,9 +459,9 @@ def bloquear_admin(request, email):
         result = collection.update_one({'correo': email}, {'$set': {'bloqueado': True}})
 
         if result.matched_count > 0:
-            messages.success(request, 'El usuario se bloqueó correctamente en Firebase y MongoDB.')
+            messages.success(request, 'El administrador se bloqueó correctamente en Firebase y MongoDB.')
         else:
-            messages.warning(request, 'El usuario fue bloqueado en Firebase, pero no se encontró en MongoDB.')
+            messages.warning(request, 'El administrador fue bloqueado en Firebase, pero no se encontró en MongoDB.')
 
     except exceptions.FirebaseError as e:
         messages.error(request, f'Ocurrió un error al interactuar con Firebase: {e}')
@@ -447,14 +490,14 @@ def desbloquear_admin(request, email):
         result = collection.update_one({'correo': email}, {'$set': {'bloqueado': False}})
 
         if result.matched_count > 0:
-            messages.success(request, 'El usuario se desbloqueó correctamente en Firebase y MongoDB.')
+            messages.success(request, 'El administrador se desbloqueó correctamente en Firebase y MongoDB.')
         else:
-            messages.warning(request, 'El usuario fue desbloqueado en Firebase, pero no se encontró en MongoDB.')
+            messages.warning(request, 'El administrador fue desbloqueado en Firebase, pero no se encontró en MongoDB.')
 
     except exceptions.FirebaseError as e:
         messages.error(request, f'Ocurrió un error al interactuar con Firebase: {e}')
     except Exception as e:
-        messages.error(request, f'Ocurrió un error inesperado al desbloquear el usuario: {e}')
+        messages.error(request, f'Ocurrió un error inesperado al desbloquear el administrador: {e}')
 
     return redirect('cuentas')
 
@@ -462,17 +505,48 @@ def desbloquear_admin(request, email):
 
 def crear_administrador(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+    
+        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
+        db = client['Gou']
+        collection = db['GoUadmin']
+
+        # Inicializa la conexión con Firebase con un nombre único
+        cred = credentials.Certificate("gou-adm-firebase-adminsdk-3hxpk-c216f44ec9.json")
+        app = firebase_admin.initialize_app(cred, name='admin_app')
+
+        # Obtiene los datos del formulario
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        rol = request.POST.get('rol')
+        correo = request.POST.get('email')
         password = request.POST.get('password')
 
         try:
-            authe.create_user_with_email_and_password(email, password)
-            database.child('administradores').push({'email': email})
+            # Guarda los datos en MongoDB
+            administrador = {
+                'nombre': nombre,
+                'apellido': apellido,
+                'rol': rol,
+                'correo': correo,
+            }
+            collection.insert_one(administrador)
+
+            # Crea un usuario en Firebase Authentication
+            user = auth.create_user(
+                app=app,
+                email=correo,
+                password=password
+            )
+
             messages.success(request, '¡Administrador creado exitosamente!')
         except Exception as e:
-            messages.error(request, 'Error al crear administrador: {}'.format(str(e)))
+            messages.error(request, f'Error al crear administrador: {str(e)}')
+        finally:
+            # Elimina la app de Firebase para evitar conflictos futuros
+            delete_app(app)
 
-    return render(request, 'accounts/cuentas.html')
+    return redirect('cuentas')
+
 
 
 
