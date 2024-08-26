@@ -220,6 +220,13 @@
         </section>
       </aside>
       <div class="content-wrapper">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         
         <!-- TABLA DE USUARIOS de la UDEC -->
         <section class="content">
