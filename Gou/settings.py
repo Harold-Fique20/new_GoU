@@ -82,12 +82,14 @@ EMAIL_HOST_PASSWORD = 'gou22024'
 
 
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'Gou',  
+        'NAME': 'GoUV2',  
         'CLIENT': {
-            'host': 'mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority&appName=ClusterGoU',
+            'host': 'mongodb+srv://gouudec2024:gou22024@gouv2.fbdwx.mongodb.net/?retryWrites=true&w=majority&appName=GoUv2',
         }
     }
 }

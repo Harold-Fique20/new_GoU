@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.base import TemplateView
 from django.core.mail import send_mail
@@ -7,20 +7,19 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 import firebase_admin
-from firebase_admin import auth, credentials, delete_app
+from firebase_admin import auth, credentials, delete_app, exceptions
 from firebase_admin.exceptions import NotFoundError, FirebaseError
 from pymongo import MongoClient
 from .firebase_config import auth, database, firebase
 from .models import Usuario
+import base64
 
 
 
-from firebase_admin import auth, exceptions
-from pymongo import MongoClient
-from django.contrib import messages
-from django.shortcuts import redirect
+# Inicializar la conexión de MongoDB
 
-
+client = MongoClient('mongodb+srv://gouudec2024:gou22024@gouv2.fbdwx.mongodb.net/?retryWrites=true&w=majority&appName=GoUv2')
+db = client['GoUV2']
 
 
 
@@ -40,9 +39,18 @@ class ContactPageView(TemplateView):
 
 class LoginPageView(TemplateView):
     template_name = 'accounts/login.html'
+
+def principal(request):
+    #VISUALIZAR NOMBRE,FOTO Y ROL DEL ADMINISTRADOR
+    email = request.session.get('email')
+    usuario = db['GoUadmin'].find_one({'correo': email})
+
+    if usuario:
+        rol = usuario['rol']
+        image_data = usuario['foto']
+        return render(request, 'accounts/principal.html', {'rol': rol, 'image_data': image_data, 'usuario': usuario})
+    return render(request, 'accounts/principal.html')
     
-class superadminPageView(TemplateView):
-    template_name = 'accounts/superadmin.html'
 
 class recu_contraPageView(TemplateView):
     template_name = 'accounts/recu_contra.html'
@@ -71,30 +79,24 @@ def send_email(request):
 
 
 
+
+
 '''...............................................vistas específicas........................................................................'''
-
- # Mostrar fotografía de los administradores   
-def perfil_usuario(request):
-    client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-    db = client['Gou']
-    collection = db['GoUadmin']
- 
-    usuario = collection.find_one({'correo': request.user.email})
-    
-    if usuario and 'foto' in usuario:
-        image_data = usuario['foto']
-    else:
-        image_data = 'accounts/static/img/avatar5.png' # Puede ser una imagen predeterminada o None si no existe la foto
-
-    return render(request, 'accounts/perfil_usuario.html', {
-        'image_data': image_data
-    })
-
 
 # Muestra la lista de administradores (Bloqueados y sin bloquear).
 def cuentas(request):
-    client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-    db = client['Gou']
+    #VISUALIZAR NOMBRE,FOTO Y ROL DEL ADMINISTRADOR
+    email = request.session.get('email')
+    usuario = db['GoUadmin'].find_one({'correo': email})
+    if usuario:
+        rol = usuario['rol']
+        image_data = usuario['foto']
+        if rol != 'Súper Administrador':
+            messages.error(request, 'Acceso denegado: No cuenta con los permisos necesarios para visualizar esta sección.')
+            return redirect('principal')
+
+    
+
     collection = db['GoUadmin']
 
     try:
@@ -123,7 +125,9 @@ def cuentas(request):
         ]
 
         # Renderizar la plantilla y pasar las listas de usuarios
-        return render(request, 'accounts/cuentas.html', {'users_blocked': users_blocked, 'user_list': user_list})
+        return render(request, 'accounts/cuentas.html', {'users_blocked': users_blocked, 'user_list': user_list, 'rol': rol, 'image_data': image_data, 'usuario': usuario})
+    
+
 
     except Exception as e:
         # Manejar posibles errores y mostrar un mensaje de error en la plantilla
@@ -145,17 +149,18 @@ def login_view(request):
             session_id = user['idToken']
             request.session['uid'] = str(session_id)
 
+            request.session['email'] = email
+
             # Conectar a MongoDB
-            client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-            db = client['Gou']
             collection = db['GoUadmin']
 
             # Buscar el usuario en MongoDB usando el correo electrónico
             usuario = collection.find_one({'correo': email})
 
             if usuario:
-                # Si se encuentra el usuario, renderizar la plantilla con los datos
-                return render(request, 'accounts/superadmin.html', {'usuario': usuario})
+                rol = usuario['rol']
+                image_data = usuario['foto']
+                return render(request, 'accounts/principal.html', {'rol': rol, 'image_data': image_data, 'usuario': usuario})
             else:
                 # Si no se encuentra el usuario, mostrar un mensaje de error
                 message = "Usuario no encontrado en la base de datos"
@@ -172,30 +177,59 @@ def login_view(request):
 
 # Permite actualizar el correo y la contraseña del usuario autenticado.
 def config(request):
+    email = request.session.get('email')
+
+    if not email:
+        messages.error(request, 'Debe iniciar sesión primero.')
+        return redirect('login')
+
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
+        # Capturar otros datos del formulario
+        nombre = request.POST.get('name')
+        apellido = request.POST.get('surname')
+        password = request.POST.get('password')
+        foto = request.FILES.get('photo')
 
-        
-        user = authe.sign_in_with_email_and_password(email, password)
+        # Conexión a MongoDB
+        collection = db['GoUadmin']
 
-        
-        user = authe.update_email(user['idToken'], email)
-        user = authe.update_password(user['idToken'], password)
+        # Conexión a Firebase
+        if not firebase_admin._apps:
+            cred = credentials.Certificate('gou-adm-firebase-adminsdk-3hxpk-c216f44ec9.json')
+            firebase_admin.initialize_app(cred)
 
-        
-        return HttpResponseRedirect('accounts/superadmin.html')
+        try:
+            # Preparar los datos para actualizar en MongoDB
+            update_data = {}
+            if nombre:
+                update_data["nombre"] = nombre
+            if apellido:
+                update_data["apellido"] = apellido
+            if foto:
+                foto_base64 = base64.b64encode(foto.read()).decode('utf-8')
+                update_data["foto"] = foto_base64
 
-  
+            # Actualizar en MongoDB si hay datos que cambiar
+            if update_data:
+                collection.update_one({"correo": email}, {"$set": update_data})
+
+            # Actualizar contraseña en Firebase si se proporciona
+            if password:
+                user = auth.get_user_by_email(email)
+                auth.update_user(user.uid, password=password)
+
+            messages.success(request, 'Datos actualizados exitosamente.')
+
+        except Exception as e:
+            messages.error(request, f'Error al actualizar los datos: {str(e)}')
+
+        return redirect('login')
+    
     return render(request, 'accounts/config.html')
 
 
 #Lista los usuarios.
 def usuario(request):
-    # Conectar a MongoDB
-    client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-    db = client['Gou']
-    
     # Seleccionar las colecciones
     usuarios_collection = db['Usuarios']
     invitados_collection = db['UsuarioInvitado']
@@ -259,11 +293,19 @@ def usuario(request):
          # Combinar las listas de usuarios bloqueados e invitados bloqueados
         combined_blocked = usuarios_blocked + invitados_blocked
 
-        # Renderizar la plantilla y pasar la lista combinada
-        return render(request, 'accounts/usuario.html', {
-            'combined_blocked': combined_blocked,
-            'usuarios_not_blocked': usuarios_not_blocked,
-            'invitados_not_blocked': invitados_not_blocked
+        email = request.session.get('email')
+        usuario = db['GoUadmin'].find_one({'correo': email})
+        if usuario:
+            rol = usuario['rol']
+            image_data = usuario['foto']
+            # Renderizar la plantilla y pasar la lista combinada
+            return render(request, 'accounts/usuario.html', {
+                'combined_blocked': combined_blocked,
+                'usuarios_not_blocked': usuarios_not_blocked,
+                'invitados_not_blocked': invitados_not_blocked, 
+                'rol': rol, 
+                'image_data': image_data, 
+                'usuario': usuario
         })
 
     except Exception as e:
@@ -271,20 +313,29 @@ def usuario(request):
         print(e)
         return render(request, 'accounts/usuario.html', {'error': str(e)})
 
+
+def documento(request):
+    #VISUALIZAR NOMBRE,FOTO Y ROL DEL ADMINISTRADOR
+    email = request.session.get('email')
+    usuario = db['GoUadmin'].find_one({'correo': email})
+
+    if usuario:
+        rol = usuario['rol']
+        image_data = usuario['foto']
+        return render(request, 'accounts/documento.html', {'rol': rol, 'image_data': image_data, 'usuario': usuario})
+    return render(request, 'accounts/documento.html')
+
+def resena(request):
+    #VISUALIZAR NOMBRE,FOTO Y ROL DEL ADMINISTRADOR
+    email = request.session.get('email')
+    usuario = db['GoUadmin'].find_one({'correo': email})
+
+    if usuario:
+        rol = usuario['rol']
+        image_data = usuario['foto']
+        return render(request, 'accounts/resena.html', {'rol': rol, 'image_data': image_data, 'usuario': usuario})
+    return render(request, 'accounts/resena.html')
     
-
-# MONGO DB - Nombre de usuarios 
-# Muestra la información del primer usuario en la colección de MongoDB.
-client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-db = client['Gou']  # Reemplaza con el nombre de tu base de datos
-usuarios_collection = db['Usuarios']
-
-def usuario_info(request):
-    # Consulta para obtener el primer usuario en la colección
-    usuario = usuarios_collection.find_one()  # Modifica según el criterio de búsqueda que necesites
-    nombre_usuario = usuario['nombre']  # Reemplaza 'nombre' con el campo que contiene el nombre del usuario
-
-    return render(request, 'ruta/a/tu/superadmin.html', {'nombre_usuario': nombre_usuario})
 
 
 
@@ -298,11 +349,10 @@ def eliminar_usuario(request, email):
     
     try:
         user_record = auth.get_user_by_email(email)
-
         auth.delete_user(user_record.uid)
 
-        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-        db = client['Gou']
+
+        # Inicializar la conexión de MongoDB
         usuarios_collection = db['Usuarios']
         invitados_collection = db['UsuarioInvitado']
 
@@ -336,8 +386,7 @@ def bloquear_usuario(request, email):
         user_record = auth.get_user_by_email(email)
 
         # Conectar a MongoDB
-        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-        db = client['Gou']
+        # Inicializar la conexión de MongoDB
         usuarios_collection = db['Usuarios']
         invitados_collection = db['UsuarioInvitado']
 
@@ -379,8 +428,7 @@ def desbloquear_usuario(request, email):
         user_record = auth.get_user_by_email(email)
 
         # Conectar a MongoDB
-        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-        db = client['Gou']
+        # Inicializar la conexión de MongoDB
         usuarios_collection = db['Usuarios']
         invitados_collection = db['UsuarioInvitado']
 
@@ -422,8 +470,6 @@ def eliminar_admin(request, email):
         auth.delete_user(user_record.uid)
 
         # Eliminar el usuario en MongoDB
-        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-        db = client['Gou']
         collection = db['GoUadmin']
         result = collection.delete_one({'correo': email})
 
@@ -454,8 +500,6 @@ def bloquear_admin(request, email):
         auth.update_user(user_record.uid, disabled=True)
 
         # Bloquear al usuario en MongoDB (puedes agregar un campo que indique que está bloqueado)
-        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-        db = client['Gou']
         collection = db['GoUadmin']
         result = collection.update_one({'correo': email}, {'$set': {'bloqueado': True}})
 
@@ -485,8 +529,6 @@ def desbloquear_admin(request, email):
         auth.update_user(user_record.uid, disabled=False)
 
         # Desbloquear al usuario en MongoDB (actualizar el campo de bloqueado)
-        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-        db = client['Gou']
         collection = db['GoUadmin']
         result = collection.update_one({'correo': email}, {'$set': {'bloqueado': False}})
 
@@ -506,9 +548,6 @@ def desbloquear_admin(request, email):
 
 def crear_administrador(request):
     if request.method == 'POST':
-    
-        client = MongoClient('mongodb+srv://GoU:gou22024@clustergou.0rlnvqb.mongodb.net/GoU?retryWrites=true&w=majority')
-        db = client['Gou']
         collection = db['GoUadmin']
 
         # Inicializa la conexión con Firebase con un nombre único
@@ -521,14 +560,18 @@ def crear_administrador(request):
         rol = request.POST.get('rol')
         correo = request.POST.get('email')
         password = request.POST.get('password')
+       
 
         try:
+            with open('accounts/static/img/administra.jpg', 'rb') as image_file:
+                default_image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
             # Guarda los datos en MongoDB
             administrador = {
                 'nombre': nombre,
                 'apellido': apellido,
                 'rol': rol,
                 'correo': correo,
+                'foto': default_image_base64,
             }
             collection.insert_one(administrador)
 
@@ -549,43 +592,6 @@ def crear_administrador(request):
     return redirect('cuentas')
 
 
-
-
-
-
-
-'''............................................................POR AGREGAR...........................................................'''
-
-
-
-
-
-
-
-
-def logout_view(request):
-    try:
-        del request.session['uid']
-    except KeyError:
-        pass
-    return render(request, 'accounts/login.html')
-
-def signup_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('nombre_de_la_pagina_principal')  # Reemplaza 'nombre_de_la_pagina_principal' con la URL a la que redirigir después del registro
-    else:
-        form = UserCreationForm()
-    return render(request, 'accounts/signup.html', {'form': form})
-
-
-
-def superadmin_view(request):
-    usuarios = Usuario.objects.all()  # Extraer todos los documentos de la colección `usuarios`
-    return render(request, 'superadmin.html', {'usuarios': usuarios})
 
 
 

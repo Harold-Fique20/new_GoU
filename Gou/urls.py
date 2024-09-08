@@ -18,16 +18,16 @@ urlpatterns = [
     path('contact', ContactPageView.as_view(), name='contact'),
     path('contact', views.send_email, name='send_email'),
     path('login', LoginPageView.as_view(), name='login'),
-    path('superadmin', superadminPageView.as_view(), name='superadmin'),
+    path('principal', views.principal, name='principal'),
     path('recu_contra', recu_contraPageView.as_view(), name='recu_contra'),
 
     # Paths para las vistas específicas
-    path('perfil_usuario/', views.perfil_usuario, name='perfil_usuario'),
     path('cuentas', views.cuentas, name='cuentas'),
     path('login_view', views.login_view, name='login_view'),
     path('config', views.config, name='config'),
     path('usuario', views.usuario, name='usuario'),
-    path('usuario/', usuario_info, name='usuario_info'),
+    path('documento', views.documento, name='documento'),
+    path('resena', views.resena, name='resena'),
 
     # Paths para la gestión de usuarios y administradores
     path('eliminar_usuario/<str:email>/', views.eliminar_usuario, name='eliminar_usuario'),

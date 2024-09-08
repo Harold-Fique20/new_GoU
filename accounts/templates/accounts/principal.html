@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
-    <title>Super_Admin | Gou II</title>
+    <title>Administración | Gou II</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="static/accounts/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -14,71 +14,30 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
     <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-    <!-- Morris chart -->
-    <link href="accounts/js/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="static/accounts/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <link href="static/accounts/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
 
     <style>
-    .navbar-custom-menu .user-menu .dropdown-menu {
-      width: 300px;
-      padding: 10px;
-      background: #fff;
-      border-radius: 4px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.1);
-    }
-
-    .navbar-custom-menu .user-menu .dropdown-menu .user-header {
-      background-color: #59ab6e;
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      border-bottom: 1px solid #f4f4f4;
-    }
-
-    .navbar-custom-menu .user-menu .dropdown-menu .user-footer {
-      background-color: #f4f4f4;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .navbar-custom-menu .user-menu .dropdown-menu .user-footer .btn {
-      color: #666;
-    }
-
-  </style>
-  </head>
-  <body class="skin-blue">
-    <div class="wrapper">
-      <header class="main-header">
-        <!-- Logo -->
-        <style>
-          .logo {
+    .logo {
             color: #FFFFFF; 
             text-decoration: none; 
             font-family: 'Arial', sans-serif;
             font-size: 24px; 
             text-shadow: 2px 2px 4px #000000; 
           }
-          
-          .logo .super {
-            font-weight: bold;
-            color: #59ab6e; 
-          }
-          
           .logo .admin {
             font-weight: normal;
             color: #FFFFFF; 
           }
-          </style>
-          
-          <a href="{% url 'superadmin' %}" class="logo">
-            <span class="super">SUPER</span>
-            <span class="admin">Administrador</span>
+  </style>
+  </head>
+  <body class="skin-green">
+    <div class="wrapper">
+      <header class="main-header">    
+          <a href="{% url 'principal' %}" class="logo">
+            <span class="admin">{{ usuario.rol }}</span>
           </a>
-          
         <nav class="navbar navbar-static-top" role="navigation">
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only"></span>
@@ -88,17 +47,19 @@
             <ul class="nav navbar-nav">
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <img src="accounts/static/img/avatar5.png" class="user-image" alt="User Image">
+                  <img src="data:image/png;base64,{{ image_data }}" class="user-image" alt="User Image">
                   <span class="hidden-xs">{{ usuario.nombre }} {{ usuario.apellido }}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="{{ image_data }}" class="user-image" alt="User Image">
-                    <p>
-                      {{ usuario.nombre }} {{ usuario.apellido }} - {{ usuario.rol }} 
-                      <small>Universidad de Cundinamarca</small>
-                    </p>
+                    <img src="data:image/png;base64,{{ image_data }}" class="user-image" alt="User Image">
+                    <div style="text-align: center; padding: 20px;">
+                      <h2 style="margin: 0; font-size: 24px; color: #f1e9e9; font-weight: 600;">{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+                      <p style="margin: 5px 0; font-size: 18px; color: #eaeef3; font-weight: 500;">{{ usuario.rol }}</p>
+                        <small>Universidad de Cundinamarca</small>
+                      </p>
+                    </div>
                   </li>
                   <!-- Botones -->
                   <li class="user-footer">
@@ -122,22 +83,14 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="accounts/static/img/avatar5.png" class="img-circle" alt="User Image" />
+              <img src="data:image/jpg;base64,{{ image_data }}" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
               <p>{{ usuario.nombre }} {{ usuario.apellido }}</p>
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
           </div>          
           </div>
-          <!-- search form -->
-          <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search..."/>
-              <span class="input-group-btn">
-                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
+
        
           <!-- MENÚ PRINCIPAL-->
           <ul class="sidebar-menu">
@@ -146,7 +99,7 @@
             <!-- USUARIOS-->
             <li class="active treeview">
               <a href="{% url 'usuario' %}">
-                <i class="fa fa-files-o"></i>
+                <i class="fa fa-users"></i>
                 <span>Usuarios</span>
                 <span class="label label-primary pull-right"></span>
               </a>
@@ -162,20 +115,20 @@
               <ul class="treeview-menu">
                 <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
                 <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                <li class="active"><a href="{% url 'superadmin' %}"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                <li class="active"><a href="{% url 'principal' %}"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
               </ul>
             </li>
 
             <!-- DOCUMENTACIÓN-->
             <li>
-              <a href="pages/mailbox/mailbox.html">
+              <a href="{% url 'documento' %}">
                 <i class="fa fa-envelope"></i> <span>Documentación</span>
               </a>
             </li>
 
             <!-- RESEÑAS-->
             <li>
-              <a href="pages/widgets.html">
+              <a href="{% url 'resena' %}">
                 <i class="fa fa-th"></i> <span>Reseñas</span>
               </a>
             </li>
@@ -183,22 +136,23 @@
             <!-- ADMINISTRADORES-->
             <li class="active treeview">
               <a href="{% url 'cuentas' %}">
-                <i class="fa fa-files-o"></i>
+                <i class="fa fa-user"></i>
                 <span>Administrador</span>
                 <span class="label label-primary pull-right"></span>
               </a>
             </li>
-
-              
-            <li class="header">LABELS</li>
-            <li><a href="#"><i class="fa fa-circle-o text-danger"></i> Important</a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-warning"></i> Warning</a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-info"></i> Information</a></li>
           </ul>
         </section>
       </aside>
       <!-- AQUI VA LO DE LA PÁGINA PRINCIPAL -->
       <div class="content-wrapper">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
         <!-- SECCIÓN DE TEXTO -->
         <section class="content">
             <div class="row">
